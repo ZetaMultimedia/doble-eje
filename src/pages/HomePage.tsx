@@ -56,6 +56,7 @@ export function HomePage() {
             <a href="/" aria-current="page">
               Inicio
             </a>
+            <a href="/catalog">Catálogo</a>
             <a href="/login">Ingresar</a>
           </nav>
         </Container>

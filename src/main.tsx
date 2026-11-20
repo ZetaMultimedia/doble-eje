@@ -5,6 +5,7 @@ import './index.css'
 import './styles/tokens.css'
 import './styles/login.css'
 import './styles/home.css'
+import './styles/catalog.css'
 import App from './App'
 import { AppProviders } from './app/providers'
 
