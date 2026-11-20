@@ -1,0 +1,56 @@
+:root {
+  --color_primary: #c8101c;
+  --color_primary_hover: #a90d17;
+  --color_primary_active: #8e0b13;
+  --color_brand_red: #e51b25;
+  --color_bg_primary: #101113;
+  --color_bg_deep: #0b0c0d;
+  --color_surface: #181a1d;
+  --color_surface_low: #141618;
+  --color_surface_high: #22252a;
+  --color_text_primary: #f5f6f7;
+  --color_text_secondary: #b7bdc5;
+  --color_border: #363b42;
+  --color_focus: #ffb4ac;
+  --font_heading: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font_body: Inter, 'Segoe UI', sans-serif;
+  --radius_sm: 0.25rem;
+  --radius_md: 0.5rem;
+  --space_xs: 0.25rem;
+  --space_sm: 0.5rem;
+  --space_md: 1rem;
+  --space_lg: 1.5rem;
+  --space_xl: 2rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  width: 100%;
+  max-width: none;
+  border: 0;
+  text-align: left;
+}
+
+body {
+  color: var(--color_text_primary);
+  background: var(--color_bg_primary);
+  font-family: var(--font_body);
+}
+
+button,
+input {
+  font: inherit;
+}
