@@ -1,7 +1,21 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Button, Col, Container, Form, Row } from 'react-bootstrap'
+import { useForm } from 'react-hook-form'
 import brandLogo from '../assets/Logo dark.svg'
+import {
+  loginSchema,
+  type LoginCredentials,
+} from '../features/auth/loginSchema'
 
 export function LoginPage() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginCredentials>({
+    resolver: zodResolver(loginSchema),
+  })
+
   return (
     <div className="login_page">
       <header className="login_header">
@@ -49,27 +63,55 @@ export function LoginPage() {
               </p>
             </div>
 
-            <Form className="login_form">
+            <Form
+              className="login_form"
+              noValidate
+              onSubmit={handleSubmit(() => undefined)}
+            >
               <Form.Group controlId="login_email">
                 <Form.Label>Correo electrónico</Form.Label>
                 <Form.Control
                   type="email"
-                  name="email"
                   autoComplete="email"
                   placeholder="nombre@empresa.com"
-                  required
+                  aria-invalid={Boolean(errors.email)}
+                  aria-describedby={
+                    errors.email ? 'login_email_error' : undefined
+                  }
+                  isInvalid={Boolean(errors.email)}
+                  {...register('email')}
                 />
+                <Form.Control.Feedback
+                  id="login_email_error"
+                  type="invalid"
+                  role="alert"
+                  className="login_error"
+                >
+                  {errors.email?.message}
+                </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Group controlId="login_password">
                 <Form.Label>Contraseña</Form.Label>
                 <Form.Control
                   type="password"
-                  name="password"
                   autoComplete="current-password"
                   placeholder="Ingresá tu contraseña"
-                  required
+                  aria-invalid={Boolean(errors.password)}
+                  aria-describedby={
+                    errors.password ? 'login_password_error' : undefined
+                  }
+                  isInvalid={Boolean(errors.password)}
+                  {...register('password')}
                 />
+                <Form.Control.Feedback
+                  id="login_password_error"
+                  type="invalid"
+                  role="alert"
+                  className="login_error"
+                >
+                  {errors.password?.message}
+                </Form.Control.Feedback>
               </Form.Group>
 
               <Form.Check

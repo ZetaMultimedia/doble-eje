@@ -196,6 +196,14 @@
   box-shadow: 0 0 0 0.2rem rgb(200 16 28 / 22%);
 }
 
+.login_form .form-control.is-invalid {
+  border-color: var(--color_brand_red);
+}
+
+.login_form .login_error {
+  color: var(--color_focus);
+}
+
 .login_form .form-check {
   min-height: 1.5rem;
   display: flex;
