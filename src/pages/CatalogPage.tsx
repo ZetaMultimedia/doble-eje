@@ -1,12 +1,7 @@
+import { useState } from 'react'
 import { Container } from 'react-bootstrap'
 import brandLogo from '../assets/Logo dark.svg'
-
-const catalogCategories = [
-  'Herramientas manuales',
-  'Herramientas eléctricas',
-  'Medición y diagnóstico',
-  'Accesorios de taller',
-]
+import { filterCatalogItems } from '../features/catalog/filterCatalogItems'
 
 const catalogItems = [
   {
@@ -47,7 +42,12 @@ const catalogItems = [
   },
 ]
 
+const catalogCategories = [...new Set(catalogItems.map((item) => item.category))]
+
 export function CatalogPage() {
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+  const filteredItems = filterCatalogItems(catalogItems, selectedCategory)
+
   return (
     <div className="catalog_page">
       <header className="catalog_header">
@@ -86,17 +86,28 @@ export function CatalogPage() {
               <h2 id="catalog_filters_title">Categorías</h2>
             </div>
             <ul>
-              {catalogCategories.map((category, index) => (
+              <li>
+                <button
+                  type="button"
+                  aria-pressed={selectedCategory === null}
+                  onClick={() => setSelectedCategory(null)}
+                >
+                  Todas las categorías
+                </button>
+              </li>
+              {catalogCategories.map((category) => (
                 <li key={category}>
-                  <span>{String(index + 1).padStart(2, '0')}</span>
-                  {category}
+                  <button
+                    type="button"
+                    aria-pressed={selectedCategory === category}
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category}
+                  </button>
                 </li>
               ))}
             </ul>
-            <p>
-              Los filtros interactivos se habilitarán junto con la integración
-              del catálogo.
-            </p>
+            <p>Seleccioná una categoría para ajustar esta vista.</p>
           </aside>
 
           <section className="catalog_results" aria-labelledby="catalog_results_title">
@@ -105,11 +116,13 @@ export function CatalogPage() {
                 <span className="catalog_kicker">Presentación inicial</span>
                 <h2 id="catalog_results_title">Áreas de producto</h2>
               </div>
-              <p aria-label="Estado de la vista">Contenido estático</p>
+              <p aria-label="Categoría seleccionada">
+                {selectedCategory ?? 'Todas las categorías'}
+              </p>
             </div>
 
             <div className="catalog_grid">
-              {catalogItems.map((item) => (
+              {filteredItems.map((item) => (
                 <article className="catalog_card" key={item.code}>
                   <div className="catalog_card_visual" aria-hidden="true">
                     <span>{item.code}</span>
