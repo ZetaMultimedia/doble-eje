@@ -1,48 +1,31 @@
 import { useState } from 'react'
 import { Container } from 'react-bootstrap'
 import brandLogo from '../assets/Logo dark.svg'
+import catalogSeed from '../data/catalog.seed.json'
 import { filterCatalogItems } from '../features/catalog/filterCatalogItems'
 
-const catalogItems = [
-  {
-    code: 'A1',
-    category: 'Perforación',
-    title: 'Equipos para perforación y ajuste',
-    detail: 'Presentación visual pendiente de integración con el catálogo.',
-  },
-  {
-    code: 'B2',
-    category: 'Herramientas manuales',
-    title: 'Conjuntos para trabajo de banco',
-    detail: 'Ficha informativa preparada para recibir datos confirmados.',
-  },
-  {
-    code: 'C3',
-    category: 'Corte',
-    title: 'Soluciones para corte y preparación',
-    detail: 'Contenido comercial no disponible en esta vista estática.',
-  },
-  {
-    code: 'D4',
-    category: 'Medición',
-    title: 'Instrumentos de control dimensional',
-    detail: 'Estructura visual lista para una futura fuente de datos.',
-  },
-  {
-    code: 'E5',
-    category: 'Taller',
-    title: 'Equipamiento para organización técnica',
-    detail: 'Presentación neutral sin disponibilidad ni transacciones.',
-  },
-  {
-    code: 'F6',
-    category: 'Accesorios',
-    title: 'Complementos para entornos de trabajo',
-    detail: 'Información detallada pendiente de validación e integración.',
-  },
-]
+const catalogItems = catalogSeed.map((item) => ({
+  code: item.Código,
+  category: item.Categoría,
+  title: item['Herramienta / descripción'],
+  details: [
+    ['Marca', item.Marca],
+    ['Modelo / medida', item['Modelo / medida']],
+    ['Estado', item.Estado],
+    ['Precio venta (ARS)', item['Precio venta (ARS)']],
+    ['Stock', item.Stock],
+    ['Disponibilidad', item.Disponibilidad],
+    ['Observaciones', item.Observaciones],
+  ] as const,
+}))
 
-const catalogCategories = [...new Set(catalogItems.map((item) => item.category))]
+const catalogCategories = [
+  ...new Set(
+    catalogItems
+      .map((item) => item.category)
+      .filter((category): category is string => category !== null),
+  ),
+]
 
 export function CatalogPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
@@ -73,8 +56,8 @@ export function CatalogPage() {
             <span className="catalog_kicker">Líneas de herramientas</span>
             <h1 id="catalog_title">Catálogo técnico</h1>
             <p>
-              Explorá la estructura de categorías y áreas de equipamiento. Los
-              datos comerciales se incorporarán desde una fuente confirmada.
+              Explorá las categorías y herramientas registradas en el catálogo
+              construido a partir de la fuente verificada.
             </p>
           </Container>
         </section>
@@ -113,8 +96,8 @@ export function CatalogPage() {
           <section className="catalog_results" aria-labelledby="catalog_results_title">
             <div className="catalog_results_heading">
               <div>
-                <span className="catalog_kicker">Presentación inicial</span>
-                <h2 id="catalog_results_title">Áreas de producto</h2>
+                <span className="catalog_kicker">Datos del catálogo</span>
+                <h2 id="catalog_results_title">Herramientas registradas</h2>
               </div>
               <p aria-label="Categoría seleccionada">
                 {selectedCategory ?? 'Todas las categorías'}
@@ -129,9 +112,15 @@ export function CatalogPage() {
                     <div />
                   </div>
                   <div className="catalog_card_body">
-                    <span>{item.category}</span>
-                    <h3>{item.title}</h3>
-                    <p>{item.detail}</p>
+                    <span>{item.category ?? ''}</span>
+                    <h3>{item.title ?? ''}</h3>
+                    <p>
+                      {item.details.map(([label, value]) => (
+                        <span key={label}>
+                          {label}: {value === null ? '' : String(value)}{' '}
+                        </span>
+                      ))}
+                    </p>
                   </div>
                 </article>
               ))}
@@ -142,12 +131,12 @@ export function CatalogPage() {
         <section className="catalog_note" aria-labelledby="catalog_note_title">
           <Container>
             <div>
-              <span className="catalog_kicker">Próxima etapa</span>
+              <span className="catalog_kicker">Fuente del catálogo</span>
               <h2 id="catalog_note_title">Información conectada y verificable</h2>
             </div>
             <p>
-              Esta estructura está preparada para mostrar categorías y
-              productos cuando el contrato de datos esté disponible.
+              Las categorías y herramientas mostradas provienen de la fuente
+              confirmada del catálogo.
             </p>
           </Container>
         </section>
@@ -159,7 +148,7 @@ export function CatalogPage() {
             <img src={brandLogo} alt="" aria-hidden="true" />
             <span>Doble Eje Tools</span>
           </div>
-          <p>Catálogo técnico en preparación.</p>
+          <p>Catálogo técnico con datos verificados.</p>
         </Container>
       </footer>
     </div>

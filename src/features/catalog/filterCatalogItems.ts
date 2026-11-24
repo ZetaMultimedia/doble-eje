@@ -1,4 +1,4 @@
-export function filterCatalogItems<T extends { category: string }>(
+export function filterCatalogItems<T extends { category: string | null }>(
   items: T[],
   selectedCategory: string | null,
 ) {
